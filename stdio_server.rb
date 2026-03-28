@@ -4,20 +4,13 @@ require_relative "lib/elgato_key_light"
 
 class ElgatoKeyLightControlTool < MCP::Tool
   tool_name "elgato_key_light_control_tool"
-  description "Controls the Elgato Key Light. Turn it on/off, set brightness (0-100) and color temperature (2900-7000 Kelvin)."
+  description "Controls the Elgato Key Light. Turn it on/off, set brightness (0-100) and color temperature 344(2900k) - 143(7000k)."
 
   input_schema(
     properties: {
       on: { type: "integer" },
       brightness: { type: "integer" },
       temperature: { type: "integer" },
-    }
-  )
-
-  output_schema(
-    properties: {
-      type: { type: "string" },
-      text: { type: "string" },
     }
   )
 
@@ -41,20 +34,13 @@ class ElgatoKeyLightStatusTool < MCP::Tool
 
   input_schema(properties: {})
 
-  output_schema(
-    properties: {
-      type: { type: "string" },
-      text: { type: "string" },
-    }
-  )
-
   class << self
     def call
       result = ElgatoKeyLight.get_light_state
 
       MCP::Tool::Response.new([{
         type: "text",
-        text: result,
+        text: JSON.generate(result),
       }])
     rescue => e
       MCP::Tool::Response.new([{ type: "text", text: JSON.generate({ error: e.message }) }])
