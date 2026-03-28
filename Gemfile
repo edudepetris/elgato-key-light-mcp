@@ -2,5 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "irb"
 gem "mcp"
+
+group :development do
+  gem "irb"
+end
