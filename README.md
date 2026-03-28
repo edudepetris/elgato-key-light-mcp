@@ -35,7 +35,7 @@ docker run -i --rm elgato-mcp
 
 > **macOS limitation:** Docker Desktop on Mac does not support `--network host`, so containers cannot reach LAN devices like the Elgato Key Light. On macOS, skip Docker and connect the MCP server directly (see below).
 
-## Add to Claude Desktop
+## Add to Claude Desktop or .mcp config
 
 On macOS, run the server directly with Ruby. Edit `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
@@ -43,8 +43,8 @@ On macOS, run the server directly with Ruby. Edit `~/Library/Application Support
 {
   "mcpServers": {
     "elgato-key-light": {
-      "command": "/path/to/bundle",
-      "args": ["exec", "ruby", "/path/to/ruby-mcp-el-gato/stdio_server.rb"]
+      "command": "/bin/bash",
+      "args": ["-c", "cd /path/to/ruby-mcp-el-gato/stdio_server.rb && exec /path/to/bundle exec ruby stdio_server.rb"]
     }
   }
 }
@@ -57,7 +57,7 @@ Find your `bundle` path with `which bundle`.
 Control the light:
 
 ```json
-{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"elgato_key_light_control_tool","arguments":{"on":1,"brightness":50,"temperature":3000}}}
+{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"elgato_key_light_control_tool","arguments":{"on":1,"brightness":50,"temperature":150}}}
 ```
 
 Get current state:
