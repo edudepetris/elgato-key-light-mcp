@@ -5,11 +5,11 @@ require 'uri'
 require 'json'
 
 module ElgatoKeyLight
-  ON = 1.freeze
+  ON = 1.freeze # Light on
   MAX_BRIGHTNESS = 100.freeze
-  MIN_BRIGHTNESS = 0.freeze
-  MAX_TEMPERATURE = 7000.freeze
-  MIN_TEMPERATURE = 2900.freeze
+  MIN_BRIGHTNESS = 3.freeze
+  MAX_TEMPERATURE = 143.freeze # 7000K
+  MIN_TEMPERATURE = 344.freeze # 2900K
 
   def self.set_light_state(on: ON, brightness: 75, temperature: MIN_TEMPERATURE)
     uri = URI('http://192.168.100.13:9123/elgato/lights')
@@ -21,5 +21,14 @@ module ElgatoKeyLight
 
     response = http.request(request)
     response.code
+  end
+
+  def self.get_light_state
+    uri = URI('http://192.168.100.13:9123/elgato/lights')
+    http = Net::HTTP.new(uri.host, uri.port)
+    request = Net::HTTP::Get.new(uri.path, 'Content-Type': 'application/json')
+
+    response = http.request(request)
+    JSON.parse(response.body)
   end
 end
